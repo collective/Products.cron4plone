@@ -3,7 +3,7 @@ import os
 
 version = '1.0'
 
-setup(name='Cron4Plone',
+setup(name='Products.cron4plone',
       version=version,
       description="",
       long_description=open("README.txt").read() + "\n" +
