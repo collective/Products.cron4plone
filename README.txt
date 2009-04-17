@@ -4,18 +4,12 @@ Cron4Plone can do scheduled tasks in Plone, in a syntax very like *NIX
 systems' cron daemon. It plugs into Zope's ClockServer machinery.
 
 
-Warning
-=======
-This is an alpha release, and is considered work in progress, just
-like this documentation...
-
-
 Installation
 ============
 1. Configure the ticker in the buildout (or zope.conf)::
 
     [instance]
-    ....
+    ...
     eggs = 
         ...
         Products.ClockServer
@@ -30,8 +24,8 @@ Installation
     In the Plone site setup, go to the cron4plone configuration. This form can 
     be used to enter cron-like jobs. 
     
-    The cron tuple should have 4 elements: minute, hour, day_of_month and
-    month. Each element can also be a tuple as is shown in the example. 
+    The cron job should have 5 elements: minute, hour, day_of_month, month and 
+    command expression. For the command python and tal expression can be used.
   
     definition: m h dom m command
 
@@ -39,12 +33,15 @@ Installation
     * 11 * * portal/@@run_me
     15,30 * * * python: portal.my_tool.runThis()
 
-    A special '*' can be used as a wildcard.
 
+3. Wait and see
+    
+    In the ZMI, go to the CronTool. If a cronjob has run the history is shown.
 
 TODO
 ====
 - Day of week is missing in cron-like syntax, add it.
+- Improve doc test, currently test has basic coverage.
 - Perhaps make a configuration form that allows users without cron syntax
   knowledge to enter jobs.
 
