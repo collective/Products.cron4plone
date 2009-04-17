@@ -1,6 +1,6 @@
 Product description
 ===================
-Cron4Plone can do scheduled tasks in Plone, in a syntax very like *NIX
+Cron4Plone can do scheduled tasks in Plone, in a syntax very like \*NIX
 systems' cron daemon. It plugs into Zope's ClockServer machinery.
 
 
