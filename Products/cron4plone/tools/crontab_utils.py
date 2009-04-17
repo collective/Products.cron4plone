@@ -4,6 +4,15 @@ from types import ListType, TupleType
 def getNoSecDate(date):
     return DateTime(date.Date() + ' ' + date.TimeMinutes())
 
+def splitJob(job):
+    splitted = job.split()
+    schedule = splitted[:4]
+    schedule = [part.find(',') != -1 and part.split(',') or part for part in schedule]
+    expression = ' '.join(splitted[4:])
+
+    return dict(schedule = schedule,
+                expression = expression)
+
 def getNextScheduledExecutionTime(schedule, current_date):
     # Return the date at which the task was last scheduled
     # Input: current_date

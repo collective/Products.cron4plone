@@ -1,13 +1,17 @@
+import transaction
+from DateTime import DateTime
+
 from OFS import SimpleItem
 from OFS.PropertyManager import PropertyManager
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
 from Products.CMFCore.Expression import Expression, getExprContext
-from crontab_utils import *
-from DateTime import DateTime
-import transaction
+
+from Products.cron4plone.tools.crontab_utils import *
+from Products.cron4plone.interfaces import ICronConfiguration
 
 class CronTool(UniqueObject, PropertyManager, 
                SimpleItem.SimpleItem, ActionProviderBase):
@@ -21,7 +25,6 @@ class CronTool(UniqueObject, PropertyManager,
                      SimpleItem.SimpleItem.manage_options
 
     _properties = (
-        {'id':'cronjobs', 'type':'text', 'mode':'w'},
         {'id':'cron_history', 'type':'text', 'mode':'r'},
     )
 
@@ -32,25 +35,22 @@ class CronTool(UniqueObject, PropertyManager,
     def __init__(self):
         """
         """
-        self.cronjobs = """
-[   {   'id': 'task_number_one',
-        'schedule':((0,15,30,45),'*','*','*'),
-        'expression': 'python: portal.do_something_every_15_minutes()',
-        },
-    {   'id': 'task_number_two',
-        'schedule':('*','*','*','*'),
-        'expression': 'python: portal.do_something_every_minute()',
-        },
-]"""
         self.cron_history = {}
 
     def _getCronData(self):
         """
         return the cron data.
-        this is very very ugly at this moment.. but there is no
-        time for something nicer right now..
-        """
-        return eval(self.cronjobs) # ouch..
+        """    
+        sm = self.getSiteManager()
+        data = sm.queryUtility(ICronConfiguration, name='cron4plone_config')
+        jobs = []
+
+        for id, job in enumerate(data.cronjobs):
+            splittedDict = splitJob(job) 
+            splittedDict['id'] = id
+            jobs.append(splittedDict)
+
+        return jobs
 
     def run_tasks(self, context):
         """
@@ -60,6 +60,7 @@ class CronTool(UniqueObject, PropertyManager,
         print "running tasks. (%s)" % str(now)
         crondata = self._getCronData()
         for line in crondata:
+            print line
             id = line['id']
 
             if id in self.cron_history.keys():

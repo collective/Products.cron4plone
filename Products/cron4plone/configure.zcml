@@ -7,5 +7,10 @@
 
     <include package=".browser" />
 
+    <adapter
+      for="Products.CMFPlone.Portal.PloneSite"
+      provides=".interfaces.ICronConfiguration"
+      factory=".tools.configlet_util.form_adapter" />
+
 
 </configure>

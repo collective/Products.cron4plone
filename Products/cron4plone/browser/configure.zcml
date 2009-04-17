@@ -13,6 +13,18 @@
       permission="zope.Public"
       allowed_interface="..interfaces.ICronTickView"
       />
+  
+  <browser:page
+     for="Products.CMFPlone.Portal.PloneSite"
+     name="cron4plone-configuration"
+     class=".configlets.cron_configuration.CronConfigurationForm"
+     permission="cmf.ManagePortal"
+     />
+
+    <browser:resource
+        name="cron4plone_icon.png"
+        image="images/clock.png"
+        />
 
 
 </configure>
