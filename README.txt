@@ -38,6 +38,18 @@ Installation
     
     In the ZMI, go to the CronTool. If a cronjob has run the history is shown.
 
+Rationale
+=========
+Cron4plone uses the clockserver and allows advanced taask scheduling:
+
+- scheduled tasks at scheduled times. E.g. I want to perform a certain
+task at 3 AM at the first day of the month.
+
+- single thread running the task: We don't want 2 threads running the
+same task at the same time. With only using clock server this might
+happen if a task takes longer than the tick period.
+
+
 TODO
 ====
 - Day of week is missing in cron-like syntax, add it.

@@ -32,7 +32,7 @@ def getNextScheduledExecutionTime(schedule, current_date):
             next_minute = scheduled_minute[0]
             for min in scheduled_minute:
                 if min >= c_minute:
-                    next_minute = min
+                    next_minute = int(min)
                     break
         else:
             next_minute = int(scheduled_minute)
@@ -46,7 +46,7 @@ def getNextScheduledExecutionTime(schedule, current_date):
             for hour in scheduled_hour:
                 if hour >= c_hour:
                     if (c_hour, c_minute) <= (hour, next_minute):
-                        next_hour = hour
+                        next_hour = int(hour)
                         break
         else:
             next_hour = int(scheduled_hour)
@@ -67,7 +67,7 @@ def getNextScheduledExecutionTime(schedule, current_date):
             for day in scheduled_day_of_month:
                 if day >= c_day:
                     if (c_day, c_hour, c_minute) <= (day, next_hour, next_minute):
-                      next_day = day
+                      next_day = int(day)
                       break
         else:
             next_day = int(scheduled_day_of_month)
@@ -95,7 +95,7 @@ def getNextScheduledExecutionTime(schedule, current_date):
             for month in scheduled_month:
                 if month >= c_month:
                     if (c_month, c_day, c_hour, c_minute) <= (month, next_day, next_hour, next_minute):
-                      next_month = month
+                      next_month = int(month)
                       break
         else:
             next_month = int(scheduled_month)
