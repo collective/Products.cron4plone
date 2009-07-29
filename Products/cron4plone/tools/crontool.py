@@ -12,7 +12,10 @@ from Products.CMFCore.Expression import Expression, getExprContext
 
 from Products.cron4plone.tools.crontab_utils import *
 from Products.cron4plone.interfaces import ICronConfiguration
-from Products.cron4plone.config import PRINT_DEBUG_INFO
+from Products.cron4plone.config import PROJECTNAME
+import logging
+
+logger = logging.getLogger(PROJECTNAME)
 
 class CronTool(UniqueObject, PropertyManager, 
                SimpleItem.SimpleItem, ActionProviderBase):
@@ -58,16 +61,16 @@ class CronTool(UniqueObject, PropertyManager,
         run the scheduled tasks
         """
         now = DateTime()
-        if PRINT_DEBUG_INFO: print "running tasks. (%s)" % str(now)
+        logger.info("running tasks. (%s)" % str(now))
         crondata = self._getCronData()
         for line in crondata:
-            if PRINT_DEBUG_INFO: print line
+            logger.debug(line)
             id = line['id']
 
             if id in self.cron_history.keys():
                 last_executed = self.cron_history[id]['last_executed']
             else:
-                if PRINT_DEBUG_INFO: print "task %s never ran before.." % id
+                logger.debug("task %s never ran before.." % id)
                 last_executed = getNoSecDate(now)
                 self.cron_history[id] = {'last_executed':last_executed}
                 self._p_changed = 1
@@ -77,14 +80,15 @@ class CronTool(UniqueObject, PropertyManager,
             next = getNextScheduledExecutionTime(schedule, last_executed)
 
             if not isPending(schedule, last_executed):
-                if PRINT_DEBUG_INFO: print("plugin %s will run on: %s" % (id, next))
+                logger.debug("plugin %s will run on: %s" % (id, next))
             else:
-                if PRINT_DEBUG_INFO: print("Running task %s" % id)
+                logger.debug("Running task %s" % id)
                 expression = line['expression']
                 expr = Expression(expression)
                 e_context = getExprContext(context)
                 result = expr(e_context)
-                if PRINT_DEBUG_INFO: print result
+                #logger.debug(result)
+                logger.debug("task finished")
                 self.cron_history[id]['last_executed'] = getNoSecDate(now)
                 self._p_changed = 1
 

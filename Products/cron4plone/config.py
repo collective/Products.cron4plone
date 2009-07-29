@@ -1,1 +1,1 @@
-PRINT_DEBUG_INFO = False
+PROJECTNAME='Products.cron4plone'

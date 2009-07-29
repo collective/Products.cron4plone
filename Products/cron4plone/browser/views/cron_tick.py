@@ -1,35 +1,33 @@
 from Acquisition import aq_inner
 from zope.interface import implements
 from Products.cron4plone.interfaces import ICronTickView
+from Products.cron4plone.config import PROJECTNAME                             
 from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
 from plone.memoize import view
 import time
 import random
-
+import logging
 from threading import Lock
 
+logger = logging.getLogger(PROJECTNAME)
+_mutex=Lock()
+
 try:
-    from unimr.memcachedlock import memcachedlock
-    from unimr.memcachedlock.memcachedlock import *
+    from unimr.memcachedlock.memcachedlock import DontLock, lock_getter
     import atexit
     _acquired_lock = None
 
     def cleanup_lock_at_program_exit():
         try:
             if _acquired_lock:
-                print "releasing lock"
                 _acquired_lock.release()
         except:
-            print "could not release lock"
             pass
 
     MEMCACHED=True
 except:
     MEMCACHED=False
-
-_mutex=Lock()
-
 
 # define an invariant unique key of an instance
 def get_key(*args,**kargs):
@@ -104,7 +102,7 @@ class CronTick(BrowserView):
 
     @locked(get_key, timeout=86400)
     def tick(self):
-        print "CronTick %s" % time.ctime()
+        logger.debug("CronTick %s" % time.ctime())
         context = aq_inner(self.context)
         crontool = getToolByName(context, 'CronTool')
         result = crontool.run_tasks(context)
