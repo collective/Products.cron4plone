@@ -3,6 +3,9 @@ Product description
 Cron4Plone can do scheduled tasks in Plone, in a syntax very like \*NIX
 systems' cron daemon. It plugs into Zope's ClockServer machinery.
 
+optionally cron4plone also uses unimr.memcachedlock to make sure that
+only one task is running at a time, even when using a distributed environment
+like multiple zeo clients on multiple machines.
 
 Installation
 ============
@@ -11,13 +14,93 @@ Installation
     [instance]
     ...
     eggs = 
-        ...
-        Products.ClockServer
+        Products.cron4plone
+
     zope-conf-additional = 
       <clock-server>
           method /<your-plone-site>/@@cron-tick
           period 60
       </clock-server>
+
+1.1 Optionally use memcached server(s) to share locks
+
+    [instance]
+    ...
+    eggs =
+        Products.cron4plone
+        unimr.memcachedlock
+
+
+    you can specify where you are running your memcached servers in the 
+    MEMCACHEDLOCK_SERVERS environment variable, e.g.:
+    
+    zope-conf-additional =
+      <environment>
+          MEMCACHEDLOCK_SERVERS <ip/hostname of host1>:<port>,<ip/hostname of host2>:<port>
+      </environment>
+
+
+1.2 Optionally install memcached from buildout
+
+    A memcached server is a standalone server process which you can either
+    get via your favourite package manager (for debian / ubuntu:
+    apt-get install memcached)
+
+    but you can also build it from a buildout:
+
+    parts +=
+        memcached
+        memcached-ctl
+        supervisor
+
+    [memcached]
+    recipe = zc.recipe.cmmi
+    url = http://memcached.googlecode.com/files/memcached-1.4.0.tar.gz
+    extra_options = --with-libevent=${libevent:location}
+
+    [memcached-ctl]
+    recipe = ore.recipe.fs:mkfile
+    path = ${buildout:bin-directory}/memcached
+    mode = 0755
+    content =
+     #!/bin/sh
+     PIDFILE=${memcached:location}/memcached.pid
+        case "$1" in
+          start)
+           ${memcached:location}/bin/memcached -d -P $PIDFILE
+            ;;
+          stop)
+            kill `cat $PIDFILE`
+            ;;
+          restart|force-reload)
+            $0 stop
+            sleep 1
+            $0 start
+            ;;
+          *)
+            echo "Usage: $SCRIPTNAME {start|stop|restart}" >&2
+            exit 1
+            ;;
+        esac
+
+
+    You need to have the libevent development libraries
+    (apt-get install libevent-dev)
+    or in buildout:
+
+
+    [libevent]
+    recipe = zc.recipe.cmmi
+    url = http://www.monkey.org/~provos/libevent-1.3b.tar.gz
+
+    Make sure that the libevent.so (shared object) file is in your
+    LD_LIBRARY_PATH before you start the memcached server if you build
+    the libevent library from the buildout.
+
+    
+    If you use supervisor, you can add a line like this to start the
+    memcached server:
+    10 memcached ${buildout:directory}/parts/memcached/bin/memcached
 
 2. Configure the scheduled tasks
 
@@ -33,10 +116,11 @@ Installation
     * 11 * * portal/@@run_me
     15,30 * * * python: portal.my_tool.runThis()
 
-
 3. Wait and see
     
     In the ZMI, go to the CronTool. If a cronjob has run the history is shown.
+
+4
 
 Rationale
 =========

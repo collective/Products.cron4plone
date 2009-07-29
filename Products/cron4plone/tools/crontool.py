@@ -12,6 +12,7 @@ from Products.CMFCore.Expression import Expression, getExprContext
 
 from Products.cron4plone.tools.crontab_utils import *
 from Products.cron4plone.interfaces import ICronConfiguration
+from Products.cron4plone.config import PRINT_DEBUG_INFO
 
 class CronTool(UniqueObject, PropertyManager, 
                SimpleItem.SimpleItem, ActionProviderBase):
@@ -57,16 +58,16 @@ class CronTool(UniqueObject, PropertyManager,
         run the scheduled tasks
         """
         now = DateTime()
-        print "running tasks. (%s)" % str(now)
+        if PRINT_DEBUG_INFO: print "running tasks. (%s)" % str(now)
         crondata = self._getCronData()
         for line in crondata:
-            print line
+            if PRINT_DEBUG_INFO: print line
             id = line['id']
 
             if id in self.cron_history.keys():
                 last_executed = self.cron_history[id]['last_executed']
             else:
-                print "task %s never ran before.." % id
+                if PRINT_DEBUG_INFO: print "task %s never ran before.." % id
                 last_executed = getNoSecDate(now)
                 self.cron_history[id] = {'last_executed':last_executed}
                 self._p_changed = 1
@@ -76,13 +77,14 @@ class CronTool(UniqueObject, PropertyManager,
             next = getNextScheduledExecutionTime(schedule, last_executed)
 
             if not isPending(schedule, last_executed):
-                print("plugin %s will run on: %s" % (id, next))
+                if PRINT_DEBUG_INFO: print("plugin %s will run on: %s" % (id, next))
             else:
-                print("Running task %s" % id)
+                if PRINT_DEBUG_INFO: print("Running task %s" % id)
                 expression = line['expression']
                 expr = Expression(expression)
                 e_context = getExprContext(context)
-                print expr(e_context)
+                result = expr(e_context)
+                if PRINT_DEBUG_INFO: print result
                 self.cron_history[id]['last_executed'] = getNoSecDate(now)
                 self._p_changed = 1
 
