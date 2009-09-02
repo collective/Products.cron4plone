@@ -152,3 +152,4 @@ See the file LICENSE included in this product.
 Parts of the code were taken from 
 "PloneMaintenance", http://plone.org/products/plonemaintenance by 
 "Ingeniweb", http://www.ingeniweb.com/.
+"unimr.memcachedlock"
