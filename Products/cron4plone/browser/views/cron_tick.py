@@ -9,6 +9,7 @@ import time
 import random
 import logging
 from threading import Lock
+from ZODB.POSException import ConflictError
 
 logger = logging.getLogger(PROJECTNAME)
 _mutex=Lock()
