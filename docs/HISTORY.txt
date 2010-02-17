@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.2
+-----
+* Fixed bug, missing 'ConflictError' import  
+
 1.1.1
 -----
 * share locks with memcached
