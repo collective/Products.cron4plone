@@ -22,7 +22,7 @@ Installation
           period 60
       </clock-server>
 
-1.1 Optionally use memcached server(s) to share locks
+1.1 Optionally use memcached server(s) to share locks::
 
     [instance]
     ...
@@ -46,42 +46,42 @@ Installation
     get via your favourite package manager (for debian / ubuntu:
     apt-get install memcached)
 
-    but you can also build it from a buildout:
+    but you can also build it from a buildout::
 
-    parts +=
-        memcached
-        memcached-ctl
-        supervisor
+        parts +=
+            memcached
+            memcached-ctl
+            supervisor
 
-    [memcached]
-    recipe = zc.recipe.cmmi
-    url = http://memcached.googlecode.com/files/memcached-1.4.0.tar.gz
-    extra_options = --with-libevent=${libevent:location}
+        [memcached]
+        recipe = zc.recipe.cmmi
+        url = http://memcached.googlecode.com/files/memcached-1.4.0.tar.gz
+        extra_options = --with-libevent=${libevent:location}
 
-    [memcached-ctl]
-    recipe = ore.recipe.fs:mkfile
-    path = ${buildout:bin-directory}/memcached
-    mode = 0755
-    content =
-     #!/bin/sh
-     PIDFILE=${memcached:location}/memcached.pid
-        case "$1" in
-          start)
-           ${memcached:location}/bin/memcached -d -P $PIDFILE
-            ;;
-          stop)
-            kill `cat $PIDFILE`
-            ;;
-          restart|force-reload)
-            $0 stop
-            sleep 1
-            $0 start
-            ;;
-          *)
-            echo "Usage: $SCRIPTNAME {start|stop|restart}" >&2
-            exit 1
-            ;;
-        esac
+        [memcached-ctl]
+        recipe = ore.recipe.fs:mkfile
+        path = ${buildout:bin-directory}/memcached
+        mode = 0755
+        content =
+         #!/bin/sh
+         PIDFILE=${memcached:location}/memcached.pid
+            case "$1" in
+              start)
+               ${memcached:location}/bin/memcached -d -P $PIDFILE
+                ;;
+              stop)
+                kill `cat $PIDFILE`
+                ;;
+              restart|force-reload)
+                $0 stop
+                sleep 1
+                $0 start
+                ;;
+              *)
+                echo "Usage: $SCRIPTNAME {start|stop|restart}" >&2
+                exit 1
+                ;;
+            esac
 
 
     You need to have the libevent development libraries
@@ -126,12 +126,8 @@ Rationale
 =========
 Cron4plone uses the clockserver and allows advanced taask scheduling:
 
-- scheduled tasks at scheduled times. E.g. I want to perform a certain
-task at 3 AM at the first day of the month.
-
-- single thread running the task: We don't want 2 threads running the
-same task at the same time. With only using clock server this might
-happen if a task takes longer than the tick period.
+- scheduled tasks at scheduled times. E.g. I want to perform a certain task at 3 AM at the first day of the month.
+- single thread running the task: We don't want 2 threads running the same task at the same time. With only using clock server this might happen if a task takes longer than the tick period.
 
 
 TODO
