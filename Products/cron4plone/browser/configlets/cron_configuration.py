@@ -45,4 +45,4 @@ class CronConfigurationForm(ControlPanelForm):
 
     label = _(u"cron4plone configuration form")
     description = _(u"Add cron jobs here. Syntax is came as cron except day of month is missing.")
-    form_name = _(u"cron4plone dettings")
+    form_name = _(u"cron4plone settings")
