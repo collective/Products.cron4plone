@@ -116,6 +116,9 @@ Installation
     * 11 * * portal/@@run_me
     15,30 * * * python: portal.my_tool.runThis()
 
+    Since the 1.1.4 release the */n and n-m syntax is also supported
+    thanks to Derek Broughton
+
 3. Wait and see
     
     In the ZMI, go to the CronTool. If a cronjob has run the history is shown.
