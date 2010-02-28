@@ -1,26 +1,37 @@
 Changelog
 =========
 
+1.1.5 (unreleased)
+------------------
+* Add locales-directories [WouterVH]
+* Code-cleanup with pyflakes [WouterVH]
+* Removed tests.py-module, since we already have a tests-directory [WouterVH]
+* Changed settings in setup.cfg to have a nicer name of the released egg  [WouterVH]
+
 1.1.4
 -----
-* patch by Derek Broughton which extends the cron syntax so that 
-  you can now also use */N and N-M formats
+* patch by Derek Broughton which extends the cron syntax so that you can now also
+  use */N and N-M formats
+
 
 1.1.3
 -----
 * The egg with version 1.1.2 on egg servers (pypi plone.org) is corrupt.
 * Fixed README, contained invalid rst
 
+
 1.1.2
 -----
-* Fixed bug, missing 'ConflictError' import  
+* Fixed bug, missing 'ConflictError' import
+
 
 1.1.1
 -----
 * share locks with memcached
 
-1.0 - Unreleased
-----------------
+
+1.0
+---
 
 * Initial release
 
