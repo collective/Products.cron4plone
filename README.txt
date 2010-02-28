@@ -120,10 +120,9 @@ Installation
     thanks to Derek Broughton
 
 3. Wait and see
-    
+
     In the ZMI, go to the CronTool. If a cronjob has run the history is shown.
 
-4
 
 Rationale
 =========
@@ -146,7 +145,7 @@ Authors: "Huub Bouma", mailto:bouma@gw20e.com
          "Kim Chee Leong", mailto:leong@gw20e.com
 
 License: This product is licensed under the GNU Public License version 2.
-See the file LICENSE included in this product.
+See the file docs/LICENSE.txt included in this product.
 
 Parts of the code were taken from 
 "PloneMaintenance", http://plone.org/products/plonemaintenance by 
