@@ -2,23 +2,25 @@ import unittest
 import doctest
 
 from Testing import ZopeTestCase as ztc
+from Products.cron4plone.tests import base
 
-from zope.component import getUtility
-from zope.testing import doctestunit
-import zope.component.testing
 
-from Products.CMFCore.utils import getToolByName
+optionflags = (doctest.REPORT_ONLY_FIRST_FAILURE |
+              doctest.NORMALIZE_WHITESPACE |
+              doctest.ELLIPSIS)
 
-from Products.cron4plone.tests.base import cron4ploneTestCase
 
 def test_suite():
     suite = unittest.TestSuite()
 
     suite.addTest(ztc.FunctionalDocFileSuite(
-        'tests/cron4plone.txt', package='Products.cron4plone',
-        test_class=cron4ploneTestCase,
-        optionflags=doctest.REPORT_ONLY_FIRST_FAILURE | doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS))
-
+        'tests/cron4plone.txt',
+        package='Products.cron4plone',
+        test_class=base.cron4ploneTestCase,
+        optionflags=optionflags))
 
     return suite
 
+
+if __name__ == '__main__':
+    unittest.main(defaultTest='test_suite')
