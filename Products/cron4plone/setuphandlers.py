@@ -1,7 +1,7 @@
-from Products.CMFCore.utils import getToolByName
-
+#from Products.CMFCore.utils import getToolByName
 from Products.cron4plone.interfaces import ICronConfiguration
 from Products.cron4plone.tools.configlet_util import ConfigletUtil
+
 
 def setupVarious(context):
 
@@ -21,7 +21,3 @@ def setupVarious(context):
         sm.registerUtility(ConfigletUtil(),
                            ICronConfiguration,
                            'cron4plone_config')
-
-        
-        
-

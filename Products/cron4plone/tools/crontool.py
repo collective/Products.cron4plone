@@ -3,7 +3,7 @@ from DateTime import DateTime
 
 from OFS import SimpleItem
 from OFS.PropertyManager import PropertyManager
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+#from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore.utils import UniqueObject
@@ -17,7 +17,8 @@ import logging
 
 logger = logging.getLogger(PROJECTNAME)
 
-class CronTool(UniqueObject, PropertyManager, 
+
+class CronTool(UniqueObject, PropertyManager,
                SimpleItem.SimpleItem, ActionProviderBase):
 
     """CronTool"""
@@ -29,12 +30,13 @@ class CronTool(UniqueObject, PropertyManager,
                      SimpleItem.SimpleItem.manage_options
 
     _properties = (
-        {'id':'cron_history', 'type':'text', 'mode':'r'},
+        {'id': 'cron_history',
+         'type': 'text',
+         'mode': 'r'},
     )
 
     # Standard security settings
     security = ClassSecurityInfo()
-
 
     def __init__(self):
         """
@@ -44,13 +46,13 @@ class CronTool(UniqueObject, PropertyManager,
     def _getCronData(self):
         """
         return the cron data.
-        """    
+        """
         sm = self.getSiteManager()
         data = sm.queryUtility(ICronConfiguration, name='cron4plone_config')
         jobs = []
 
         for id, job in enumerate(data.cronjobs):
-            splittedDict = splitJob(job) 
+            splittedDict = splitJob(job)
             splittedDict['id'] = id
             jobs.append(splittedDict)
 
@@ -72,7 +74,7 @@ class CronTool(UniqueObject, PropertyManager,
             else:
                 logger.debug("task %s never ran before.." % id)
                 last_executed = getNoSecDate(now)
-                self.cron_history[id] = {'last_executed':last_executed}
+                self.cron_history[id] = {'last_executed': last_executed}
                 self._p_changed = 1
 
             schedule = line['schedule']
@@ -93,4 +95,3 @@ class CronTool(UniqueObject, PropertyManager,
                 self._p_changed = 1
 
             transaction.commit() # necessary???
-

@@ -1,8 +1,10 @@
 from DateTime import DateTime
 from types import ListType, TupleType
 
+
 def getNoSecDate(date):
     return DateTime(date.Date() + ' ' + date.TimeMinutes())
+
 
 def _reformatSched(ix, parts):
     rep = parts.split('/')
@@ -11,21 +13,23 @@ def _reformatSched(ix, parts):
     else:
         rng = rep[0].split('-')
     if len(rng) > 1:
-        part = range(int(rng[0]),1+int(rng[1]))
+        part = range(int(rng[0]), 1+int(rng[1]))
     else:
         part = rep[0]
-    
+
     if (type(part) == ListType) and len(rep) > 1:
         part = part[::int(rep[1])]
     return part
 
+
 def splitJob(job):
-    splitted = job.split(' ',5)
+    splitted = job.split(' ', 5)
     schedule = splitted[:4]
-    schedule = [_reformatSched(ix,part) for ix,part in enumerate(schedule)]
+    schedule = [_reformatSched(ix, part) for ix, part in enumerate(schedule)]
 
     return dict(schedule = schedule,
                 expression = splitted[4])
+
 
 def getNextScheduledExecutionTime(schedule, current_date):
     # Return the date at which the task was last scheduled
@@ -81,8 +85,8 @@ def getNextScheduledExecutionTime(schedule, current_date):
             for day in scheduled_day_of_month:
                 if day >= c_day:
                     if (c_day, c_hour, c_minute) <= (day, next_hour, next_minute):
-                      next_day = int(day)
-                      break
+                        next_day = int(day)
+                        break
         else:
             next_day = int(scheduled_day_of_month)
 
@@ -97,8 +101,8 @@ def getNextScheduledExecutionTime(schedule, current_date):
             elif  c_month == 2:
                 is_leap_year = DateTime(c_year, c_month, c_day).isLeapYear()
                 if (is_leap_year and next_day > 29) or \
-                   (not is_leap_year and next_day > 28): 
-                       next_day = 1
+                   (not is_leap_year and next_day > 28):
+                    next_day = 1
 
     # Month
     if scheduled_month == '*':
@@ -109,8 +113,8 @@ def getNextScheduledExecutionTime(schedule, current_date):
             for month in scheduled_month:
                 if month >= c_month:
                     if (c_month, c_day, c_hour, c_minute) <= (month, next_day, next_hour, next_minute):
-                      next_month = int(month)
-                      break
+                        next_month = int(month)
+                        break
         else:
             next_month = int(scheduled_month)
 
@@ -200,5 +204,3 @@ def isPending(schedule, last_executed_time):
         pending = False
 
     return pending
-
-

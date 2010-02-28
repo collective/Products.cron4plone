@@ -17,4 +17,3 @@ class ConfigletUtil(SimpleItem):
         print self.cronjobs
 
     cronjobs = FieldProperty(ICronConfiguration['cronjobs'])
-

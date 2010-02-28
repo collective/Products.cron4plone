@@ -1,12 +1,12 @@
 from Acquisition import aq_inner
 from zope.interface import implements
 from Products.cron4plone.interfaces import ICronTickView
-from Products.cron4plone.config import PROJECTNAME                             
+from Products.cron4plone.config import PROJECTNAME
 from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
-from plone.memoize import view
+#from plone.memoize import view
 import time
-import random
+#import random
 import logging
 from threading import Lock
 from ZODB.POSException import ConflictError
@@ -30,18 +30,22 @@ try:
 except:
     MEMCACHED=False
 
+
 # define an invariant unique key of an instance
-def get_key(*args,**kargs):
+def get_key(*args, **kargs):
     instance = args[0].context
     return '/'.join(instance.getPhysicalPath())+'-cron4plone-memcached-key'
+
 
 class CronTick(BrowserView):
     implements(ICronTickView)
 
     if MEMCACHED:
 
-        def locked(get_key,timeout=30,intervall=0.05):
+        def locked(get_key, timeout=30, intervall=0.05):
+
             def decorator(fun):
+
                 def replacement(*args, **kwargs):
                     try:
                         key = get_key(*args, **kwargs)
@@ -51,7 +55,7 @@ class CronTick(BrowserView):
                     key = '%s.%s:%s' % (fun.__module__, fun.__name__, key)
 
                     global _acquired_lock
-                    lock = lock_getter(key,timeout,intervall)
+                    lock = lock_getter(key, timeout, intervall)
 
                     reserved = False
                     acquired_lock = False
@@ -65,13 +69,13 @@ class CronTick(BrowserView):
                             _acquired_lock = lock
                         try:
                             result = fun(*args, **kwargs)
-                        except ConflictError , msg:
-                            reserved = lock.acquire(blocking=0,timeout=1)
+                        except ConflictError, msg:
+                            reserved = lock.acquire(blocking=0, timeout=1)
 
                             if reserved:
                                 logger.warning('ConflictError, lock reserved (1s) for retry')
 
-                            raise ConflictError , msg
+                            raise ConflictError, msg
 
                     finally:
                         # only release if not raised a ConflictError
@@ -89,7 +93,9 @@ class CronTick(BrowserView):
 
         # decorator to only allow one thread to run the decorated method
         def locked(*unused, **kw_unused):
+
             def decorator(fn):
+
                 def wrapper(*args, **kwargs):
                     lock = _mutex.acquire(False) # non-blocking lock
                     if not lock:
@@ -108,5 +114,3 @@ class CronTick(BrowserView):
         crontool = getToolByName(context, 'CronTool')
         result = crontool.run_tasks(context)
         return result
-
-
