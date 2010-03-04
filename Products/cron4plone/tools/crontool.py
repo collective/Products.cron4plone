@@ -11,7 +11,7 @@ from Products.CMFCore.ActionProviderBase import ActionProviderBase
 from Products.CMFCore.Expression import Expression, getExprContext
 
 from Products.cron4plone.tools.crontab_utils import *
-from Products.cron4plone.interfaces import ICronConfiguration
+from Products.cron4plone.browser.configlets.cron_configuration import ICronConfiguration
 from Products.cron4plone.config import PROJECTNAME
 import logging
 

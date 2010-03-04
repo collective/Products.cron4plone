@@ -17,7 +17,7 @@
 
     <adapter
       for="Products.CMFPlone.Portal.PloneSite"
-      provides=".interfaces.ICronConfiguration"
+      provides=".browser.configlets.cron_configuration.ICronConfiguration"
       factory=".tools.configlet_util.form_adapter" />
 
 

@@ -13,7 +13,7 @@ Make sure we are admin
 
 Do we have the local utility that is used for storing the cron jobs?
 
-    >>> from Products.cron4plone.interfaces import ICronConfiguration
+    >>> from Products.cron4plone.browser.configlets.cron_configuration import ICronConfiguration
     >>> sm = self.portal.getSiteManager()
     >>> sm.queryUtility(ICronConfiguration, name='cron4plone_config')
     <ConfigletUtil at /plone/>

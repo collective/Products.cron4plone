@@ -3,7 +3,7 @@ from zope.interface import implements
 from zope.schema.fieldproperty import FieldProperty
 from OFS.SimpleItem import SimpleItem
 
-from Products.cron4plone.interfaces import ICronConfiguration
+from Products.cron4plone.browser.configlets.cron_configuration import ICronConfiguration
 
 
 def form_adapter(context):

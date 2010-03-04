@@ -1,5 +1,5 @@
 #from Products.CMFCore.utils import getToolByName
-from Products.cron4plone.interfaces import ICronConfiguration
+from Products.cron4plone.browser.configlets.cron_configuration import ICronConfiguration
 from Products.cron4plone.tools.configlet_util import ConfigletUtil
 
 
