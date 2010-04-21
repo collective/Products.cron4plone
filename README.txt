@@ -135,6 +135,7 @@ Cron4plone uses the clockserver and allows advanced taask scheduling:
 TODO
 ====
 - Day of week is missing in cron-like syntax, add it.
+- Send mail report each time a job run, or only when one fail.
 - Improve doc test, currently test has basic coverage.
 - Perhaps make a configuration form that allows users without cron syntax
   knowledge to enter jobs.
