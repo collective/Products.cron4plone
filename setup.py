@@ -5,7 +5,7 @@ version = '1.1.4'
 
 setup(name='Products.cron4plone',
       version=version,
-      description="Cron4Plone can do scheduled tasks in Plone",
+      description="cron4plone can do scheduled tasks in Plone",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers

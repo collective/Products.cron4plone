@@ -3,9 +3,20 @@ Product description
 Cron4Plone can do scheduled tasks in Plone, in a syntax very like \*NIX
 systems' cron daemon. It plugs into Zope's ClockServer machinery.
 
-optionally cron4plone also uses unimr.memcachedlock to make sure that
+Optionally cron4plone also uses unimr.memcachedlock to make sure that
 only one task is running at a time, even when using a distributed environment
 like multiple zeo clients on multiple machines.
+
+Rationale
+=========
+Cron4plone uses the clockserver and allows advanced task scheduling:
+
+* Scheduled tasks at scheduled times. E.g. I want to perform a certain task at 
+  3 AM on the first day of the month.
+* Single thread running the task: We don't want 2 threads running the same task
+  at the same time. When using clock server only this might happen if a task 
+  takes longer than the tick period.
+
 
 Installation
 ============
@@ -28,9 +39,9 @@ Installation
           password admin_password
       </clock-server>
 
-The `user` and `password` variables are required if you want to call a view
-that requires special permissions, for example when your view tries to create 
-content. 
+The `user` and `password` variables can be omitted, but are required if you
+want to call a view that requires special permissions, for example when trying 
+to create content. 
 
 1.1 Optionally use memcached server(s) to share locks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,8 +55,8 @@ content.
         unimr.memcachedlock
 
 
-    you can specify where you are running your memcached servers in the 
-    MEMCACHEDLOCK_SERVERS environment variable, e.g.:
+You can specify where you are running your memcached servers in the 
+MEMCACHEDLOCK_SERVERS environment variable, e.g.::
     
     zope-conf-additional =
       <environment>
@@ -100,12 +111,11 @@ But you can also build it from a buildout::
 
 You need to have the libevent development libraries
 (apt-get install libevent-dev)
-or in buildout:
+or in buildout::
 
-
-[libevent]
-recipe = zc.recipe.cmmi
-url = http://www.monkey.org/~provos/libevent-1.3b.tar.gz
+    [libevent]
+    recipe = zc.recipe.cmmi
+    url = http://www.monkey.org/~provos/libevent-1.3b.tar.gz
 
 Make sure that the libevent.so (shared object) file is in your
 LD_LIBRARY_PATH before you start the memcached server if you build
@@ -113,8 +123,9 @@ the libevent library from the buildout.
 
 
 If you use supervisor, you can add a line like this to start the
-memcached server:
-10 memcached ${buildout:directory}/parts/memcached/bin/memcached
+memcached server::
+
+    10 memcached ${buildout:directory}/parts/memcached/bin/memcached
 
 2. Configure the scheduled tasks
 --------------------------------
@@ -123,17 +134,16 @@ In the Plone site setup, go to the cron4plone configuration. This form can
 be used to enter cron-like jobs. 
 
 The cron job should have 5 elements: minute, hour, day_of_month, month and 
-command expression. For the command python and tal expression can be used.
-
-definition: m h dom m command
+command expression. For `command`, a TAL expression can be used (including
+'python: '). The variable `portal` is the Plone site root.
 
 Examples::
 
     * 11 * * portal/@@run_me
     15,30 * * * python: portal.my_tool.runThis()
 
-Since the 1.1.4 release the /n and n-m syntax is also supported,
-thanks to Derek Broughton. Example::
+Since the 1.1.4 release the /N and N-M syntax is also supported,
+thanks to Derek Broughton. This example will run the cron job ::
 
     */4 11 * * portal/@@run_me
 
@@ -141,14 +151,6 @@ thanks to Derek Broughton. Example::
 ---------------
 
 In the ZMI, go to the CronTool. If a cronjob has run the history is shown.
-
-
-Rationale
-=========
-Cron4plone uses the clockserver and allows advanced taask scheduling:
-
-- scheduled tasks at scheduled times. E.g. I want to perform a certain task at 3 AM at the first day of the month.
-- single thread running the task: We don't want 2 threads running the same task at the same time. With only using clock server this might happen if a task takes longer than the tick period.
 
 
 TODO
