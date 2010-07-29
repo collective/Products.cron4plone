@@ -10,8 +10,8 @@ Changelog
 
 1.1.4
 -----
-* patch by Derek Broughton which extends the cron syntax so that you can now also
-  use */N and N-M formats
+* patch by Derek Broughton which extends the cron syntax so that you can now 
+  also use /N and N-M formats
 
 
 1.1.3
