@@ -1,12 +1,15 @@
 Changelog
 =========
 
-1.1.5 (unreleased)
-------------------
+1.1.5rc1 (2010-07-30)
+---------------------
+
 * Add locales-directories [WouterVH]
 * Code-cleanup with pyflakes [WouterVH]
 * Removed tests.py-module, since we already have a tests-directory [WouterVH]
-* Changed settings in setup.cfg to have a nicer name of the released egg  [WouterVH]
+* Removed setup.cfg to have full control over name of released egg  
+  [WouterVH, khink]
+* Extended and re-formatted documentation [khink]
 
 1.1.4
 -----

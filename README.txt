@@ -83,6 +83,7 @@ MEMCACHEDLOCK_SERVERS environment variable, e.g.::
           MEMCACHEDLOCK_SERVERS <ip/hostname of host1>:<port>,<ip/hostname of host2>:<port>
       </environment>
 
+The default port for memcached is 11211.
 
 1.3 Optionally install memcached from buildout
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
