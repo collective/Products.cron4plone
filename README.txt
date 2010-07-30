@@ -41,11 +41,32 @@ Installation
 
 The `user` and `password` variables can be omitted, but are required if you
 want to call a view that requires special permissions, for example when trying 
-to create content. 
+to create content.
 
-1.1 Optionally use memcached server(s) to share locks
+1.1 Multiple instances
+~~~~~~~~~~~~~~~~~~~~~~
+
+If you have multiple Zope instances in your buildout, it makes sense to add the
+`zope-conf-additional` to one instance only. This will ensure only one instance
+will try to run the `@@cron-tick` method. 
+
+`Products.cron4plone` should be present in all instances, or else the instance
+won't have the software for CronTool object. This will cause errors on startup
+and you won't be able to change the cron jobs.
+
+1.2 Optionally use memcached server(s) to share locks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+You would use memcached_ if your Zope instance runs on multiple machines. In
+this case, all machines would run `@@cron-tick` at the same time, which is not
+what you want, especially when creating content. Memcached will share a lock
+between multiple machine, so only one machine will run the cron job.
+
+A memcached server is a standalone server process which you can either
+get via your favourite package manager (for Debian / Ubuntu:
+`apt-get install memcached`)
+
+Install and configure `memcached`, and add unimr.memcachedlock_ to 
 `buildout.cfg`::
 
     [instance]
@@ -53,7 +74,6 @@ to create content.
     eggs =
         Products.cron4plone
         unimr.memcachedlock
-
 
 You can specify where you are running your memcached servers in the 
 MEMCACHEDLOCK_SERVERS environment variable, e.g.::
@@ -64,14 +84,10 @@ MEMCACHEDLOCK_SERVERS environment variable, e.g.::
       </environment>
 
 
-1.2 Optionally install memcached from buildout
+1.3 Optionally install memcached from buildout
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A memcached server is a standalone server process which you can either
-get via your favourite package manager (for debian / ubuntu:
-apt-get install memcached)
-
-But you can also build it from a buildout::
+You can also build `memcached` from a buildout::
 
     parts +=
         memcached
@@ -163,13 +179,17 @@ TODO
 
 License and credits
 ===================
-Authors: "Huub Bouma", mailto:bouma@gw20e.com
-         "Kim Chee Leong", mailto:leong@gw20e.com
+
+Authors: `Huub Bouma`_ and `Kim Chee Leong`_
 
 License: This product is licensed under the GNU Public License version 2.
 See the file docs/LICENSE.txt included in this product.
 
-Parts of the code were taken from 
-"PloneMaintenance", http://plone.org/products/plonemaintenance by 
-"Ingeniweb", http://www.ingeniweb.com/.
-"unimr.memcachedlock"
+Parts of the code were taken from plonemaintenance_ by Ingeniweb_.
+
+.. _plonemaintenance: http://plone.org/products/plonemaintenance 
+.. _memcached: http://memcached.org/
+.. _Ingeniweb: http://www.ingeniweb.com/
+.. _unimr.memcachedlock: http://pypi.python.org/pypi/unimr.memcachedlock/
+.. _Huub Bouma: mailto:bouma@gw20e.com
+.. _Kim Chee Leong: mailto:leong@gw20e.com
