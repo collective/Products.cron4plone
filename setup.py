@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.1.5rc1'
+version = '1.1.5'
 
 setup(name='Products.cron4plone',
       version=version,
