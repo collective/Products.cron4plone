@@ -159,11 +159,6 @@ Examples::
     * 11 * * portal/@@run_me
     15,30 * * * python: portal.my_tool.runThis()
 
-Since the 1.1.4 release the /N and N-M syntax is also supported,
-thanks to Derek Broughton. Example::
-
-    */4 11 * * portal/@@run_me
-
 3. Wait and see
 ---------------
 

@@ -5,31 +5,13 @@ from types import ListType, TupleType
 def getNoSecDate(date):
     return DateTime(date.Date() + ' ' + date.TimeMinutes())
 
-
-def _reformatSched(ix, parts):
-    rep = parts.split('/')
-    if rep[0] == '*':
-        rng = [0, (ix==0 and 59 or ix==1 and 23 or ix==2 and 30 or 11)]
-    else:
-        rng = rep[0].split('-')
-    if len(rng) > 1:
-        part = range(int(rng[0]), 1+int(rng[1]))
-    else:
-        part = rep[0]
-
-    if (type(part) == ListType) and len(rep) > 1:
-        part = part[::int(rep[1])]
-    return part
-
-
 def splitJob(job):
-    splitted = job.split(' ', 5)
+    splitted = job.split()
     schedule = splitted[:4]
-    schedule = [_reformatSched(ix, part) for ix, part in enumerate(schedule)]
-
+    schedule = [part.find(',') != -1 and part.split(',') or part for part in schedule]
+    expression = ' '.join(splitted[4:])
     return dict(schedule = schedule,
-                expression = splitted[4])
-
+                expression = expression)
 
 def getNextScheduledExecutionTime(schedule, current_date):
     # Return the date at which the task was last scheduled

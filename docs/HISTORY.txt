@@ -1,8 +1,11 @@
 Changelog
 =========
 
-1.1.5 (unreleased)
+1.1.6 (unreleased)
 ------------------
+No longer support for the extened cron syntax with the /N and N-M formats
+This didn't work as intended. The logic in the cron_utils is flawed i.c.w that
+syntax. That old code has been moved to a enumeration-support branch.
 
 1.1.5rc1 (2010-07-30)
 ---------------------
