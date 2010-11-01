@@ -3,7 +3,8 @@ from types import ListType, TupleType
 
 
 def getNoSecDate(date):
-    return DateTime(date.Date() + ' ' + date.TimeMinutes())
+    datestr = '%s %s %s' % (date.Date(), date.TimeMinutes(), date.timezone())
+    return DateTime(datestr)
 
 def splitJob(job):
     splitted = job.split()
@@ -150,7 +151,7 @@ def getNextScheduledExecutionTime(schedule, current_date):
             next_minute = int(scheduled_minute[0])
 
 
-    date_string = "%d/%02d/%02d %02d:%02d" % (next_year, next_month, next_day, next_hour, next_minute)
+    date_string = "%d/%02d/%02d %02d:%02d UTC" % (next_year, next_month, next_day, next_hour, next_minute)
 
 
     try:
@@ -166,7 +167,7 @@ def isPending(schedule, last_executed_time):
     Otherwise run the task if the current date falls in this intervall
     """
 
-    now = getNoSecDate(DateTime())
+    now = getNoSecDate(DateTime('UTC'))
 
     pending = False
 

@@ -62,7 +62,7 @@ class CronTool(UniqueObject, PropertyManager,
         """
         run the scheduled tasks
         """
-        now = DateTime()
+        now = DateTime('UTC')
         logger.info("running tasks. (%s)" % str(now))
         crondata = self._getCronData()
         for line in crondata:

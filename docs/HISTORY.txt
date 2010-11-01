@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.7 (unreleased)
+------------------
+convert all DateTime calls to use UTC. This fixes a bug when switching to dayligt saving time. (thanks for bug report + fix to Michael Lindig)
+
 1.1.6 (2010-10-19)
 ------------------
 No longer support for the extened cron syntax with the /N and N-M formats

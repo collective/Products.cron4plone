@@ -17,7 +17,7 @@ def checkJob(jobs):
     for id, job in enumerate(jobs):
         try:
             data = splitJob(job)
-            getNextScheduledExecutionTime(data['schedule'], DateTime())
+            getNextScheduledExecutionTime(data['schedule'], DateTime('UTC'))
         except:
             raise JobInvalid # can we be a bit more verbose, say which job is invalid
 
