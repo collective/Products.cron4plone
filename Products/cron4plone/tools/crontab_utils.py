@@ -3,8 +3,7 @@ from types import ListType, TupleType
 
 
 def getNoSecDate(date):
-    datestr = '%s %s %s' % (date.Date(), date.TimeMinutes(), date.timezone())
-    return DateTime(datestr)
+    return date - float(date.millis()%60000) / (24*3600*1000)
 
 def splitJob(job):
     splitted = job.split()
@@ -151,7 +150,7 @@ def getNextScheduledExecutionTime(schedule, current_date):
             next_minute = int(scheduled_minute[0])
 
 
-    date_string = "%d/%02d/%02d %02d:%02d UTC" % (next_year, next_month, next_day, next_hour, next_minute)
+    date_string = "%d/%02d/%02d %02d:%02d %s" % (next_year, next_month, next_day, next_hour, next_minute, c_zone)
 
 
     try:
@@ -160,14 +159,12 @@ def getNextScheduledExecutionTime(schedule, current_date):
         return DateTime('2500/12/31 00:00')
 
 
-def isPending(schedule, last_executed_time):
+def isPending(schedule, last_executed_time, now = getNoSecDate(DateTime())):
     """ Return 1 if task is pending, 0 else
 
     If the task was already run in this intervall, do nothing
     Otherwise run the task if the current date falls in this intervall
     """
-
-    now = getNoSecDate(DateTime('UTC'))
 
     pending = False
 
@@ -187,3 +184,18 @@ def isPending(schedule, last_executed_time):
         pending = False
 
     return pending
+
+ 
+def _main():
+    # Main program for testing.
+    sched = [ '*', '*', '*', '*' ]
+    lext  = DateTime("2010/10/31 02:59:12 GMT+2")
+    curr  = DateTime("2010/10/31 02:00:12 GMT+1")
+    next  = getNextScheduledExecutionTime(sched, curr)
+    bpend = isPending(sched, lext, curr)
+    print "getNoSecDate(%s) = %s" % (str(curr), str(getNoSecDate(curr)))
+    print "%s -> %s" %(str(curr), str(next))
+    print "%s = isPending(%s, %s)" %(str(bpend), str(sched), str(curr))
+    
+if __name__ == "__main__":
+    _main()
