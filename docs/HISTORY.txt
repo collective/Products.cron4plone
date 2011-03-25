@@ -1,7 +1,11 @@
 Changelog
 =========
 
-1.1.7 (unreleased)
+1.1.8 (unreleased)
+------------------
+* 
+
+1.1.7 (2011-03-25)
 ------------------
 * convert all DateTime calls to use UTC. This fixes a bug when switching to dayligt saving time. (thanks for bug report + fix to Michael Lindig)
 * Fix comparison bug in comma-separated cron syntax by first casting to an integer (thanks for bug report + fix to David Breitkreutz)
