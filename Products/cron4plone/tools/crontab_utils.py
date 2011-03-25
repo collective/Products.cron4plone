@@ -31,8 +31,10 @@ def getNextScheduledExecutionTime(schedule, current_date):
         if type(scheduled_minute) in (ListType, TupleType):
             next_minute = scheduled_minute[0]
             for min in scheduled_minute:
-                if min >= c_minute:
-                    next_minute = int(min)
+                #Convert this from string to int to ensure comparison works
+                min_int = int(min)
+                if min_int >= c_minute:
+                    next_minute = min_int
                     break
         else:
             next_minute = int(scheduled_minute)
@@ -44,9 +46,11 @@ def getNextScheduledExecutionTime(schedule, current_date):
         if type(scheduled_hour) in (ListType, TupleType):
             next_hour = scheduled_hour[0]
             for hour in scheduled_hour:
-                if hour >= c_hour:
-                    if (c_hour, c_minute) <= (hour, next_minute):
-                        next_hour = int(hour)
+                #Convert this from string to int to ensure comparison works
+                hour_int = int(hour)
+                if hour_int >= c_hour:
+                    if (c_hour, c_minute) <= (hour_int, next_minute):
+                        next_hour = hour_int
                         break
         else:
             next_hour = int(scheduled_hour)
@@ -65,9 +69,11 @@ def getNextScheduledExecutionTime(schedule, current_date):
         if type(scheduled_day_of_month) in (ListType, TupleType):
             next_day = scheduled_day_of_month[0]
             for day in scheduled_day_of_month:
-                if day >= c_day:
-                    if (c_day, c_hour, c_minute) <= (day, next_hour, next_minute):
-                        next_day = int(day)
+                #Convert this from string to int to ensure comparison works
+                day_int = int(day)
+                if day_int >= c_day:
+                    if (c_day, c_hour, c_minute) <= (day_int, next_hour, next_minute):
+                        next_day = day_int
                         break
         else:
             next_day = int(scheduled_day_of_month)
@@ -93,9 +99,11 @@ def getNextScheduledExecutionTime(schedule, current_date):
         if type(scheduled_month) in (ListType, TupleType):
             next_month = scheduled_month[0]
             for month in scheduled_month:
-                if month >= c_month:
-                    if (c_month, c_day, c_hour, c_minute) <= (month, next_day, next_hour, next_minute):
-                        next_month = int(month)
+                #Convert this from string to int to ensure comparison works
+                month_int = int(month)
+                if month_int >= c_month:
+                    if (c_month, c_day, c_hour, c_minute) <= (month_int, next_day, next_hour, next_minute):
+                        next_month = month_int
                         break
         else:
             next_month = int(scheduled_month)
@@ -185,7 +193,7 @@ def isPending(schedule, last_executed_time, now = getNoSecDate(DateTime())):
 
     return pending
 
- 
+
 def _main():
     # Main program for testing.
     sched = [ '*', '*', '*', '*' ]
@@ -196,6 +204,6 @@ def _main():
     print "getNoSecDate(%s) = %s" % (str(curr), str(getNoSecDate(curr)))
     print "%s -> %s" %(str(curr), str(next))
     print "%s = isPending(%s, %s)" %(str(bpend), str(sched), str(curr))
-    
+
 if __name__ == "__main__":
     _main()

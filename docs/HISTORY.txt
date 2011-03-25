@@ -3,7 +3,8 @@ Changelog
 
 1.1.7 (unreleased)
 ------------------
-convert all DateTime calls to use UTC. This fixes a bug when switching to dayligt saving time. (thanks for bug report + fix to Michael Lindig)
+* convert all DateTime calls to use UTC. This fixes a bug when switching to dayligt saving time. (thanks for bug report + fix to Michael Lindig)
+* Fix comparison bug in comma-separated cron syntax by first casting to an integer (thanks for bug report + fix to David Breitkreutz)
 
 1.1.6 (2010-10-19)
 ------------------
