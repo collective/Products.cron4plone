@@ -29,7 +29,7 @@ def getNextScheduledExecutionTime(schedule, current_date):
         next_minute = c_minute
     else:
         if type(scheduled_minute) in (ListType, TupleType):
-            next_minute = scheduled_minute[0]
+            next_minute = int(scheduled_minute[0])
             for min in scheduled_minute:
                 #Convert this from string to int to ensure comparison works
                 min_int = int(min)
@@ -44,7 +44,7 @@ def getNextScheduledExecutionTime(schedule, current_date):
         next_hour = c_hour
     else:
         if type(scheduled_hour) in (ListType, TupleType):
-            next_hour = scheduled_hour[0]
+            next_hour = int(scheduled_hour[0])
             for hour in scheduled_hour:
                 #Convert this from string to int to ensure comparison works
                 hour_int = int(hour)
@@ -67,7 +67,7 @@ def getNextScheduledExecutionTime(schedule, current_date):
         next_day=c_day
     else:
         if type(scheduled_day_of_month) in (ListType, TupleType):
-            next_day = scheduled_day_of_month[0]
+            next_day = int(scheduled_day_of_month[0])
             for day in scheduled_day_of_month:
                 #Convert this from string to int to ensure comparison works
                 day_int = int(day)
@@ -97,7 +97,7 @@ def getNextScheduledExecutionTime(schedule, current_date):
         next_month = c_month
     else:
         if type(scheduled_month) in (ListType, TupleType):
-            next_month = scheduled_month[0]
+            next_month = int(scheduled_month[0])
             for month in scheduled_month:
                 #Convert this from string to int to ensure comparison works
                 month_int = int(month)
