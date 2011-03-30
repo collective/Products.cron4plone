@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.9 (unreleased)
+------------------
+* 
+
 1.1.8 (2011-03-30)
 ------------------
 * Fix issue with string formatting for date in crontab utils by casting expected values to integers at first use. [davidjb]
