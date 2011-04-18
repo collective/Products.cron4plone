@@ -167,13 +167,14 @@ def getNextScheduledExecutionTime(schedule, current_date):
         return DateTime('2500/12/31 00:00')
 
 
-def isPending(schedule, last_executed_time, now = getNoSecDate(DateTime())):
+def isPending(schedule, last_executed_time, now = None):
     """ Return 1 if task is pending, 0 else
 
     If the task was already run in this intervall, do nothing
     Otherwise run the task if the current date falls in this intervall
     """
-
+    if now is None:
+        now = getNoSecDate(DateTime())
     pending = False
 
     current_next_scheduled = getNextScheduledExecutionTime(schedule, now)
