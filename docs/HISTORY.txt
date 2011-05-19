@@ -6,6 +6,7 @@ Changelog
 ------------------
 
 - Add MANIFEST.in to include docs in release. [WouterVH]
+- fixed bug in the isPending method: default parameter has to be inside the method or it will have the same value as when the instance was started so tasks will not be rerun as expected [svincic]
 
 
 1.1.8 (2011-03-30)
