@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.1.9 (unreleased)
+1.1.9 (2011-05-19)
 ------------------
 
 - Add MANIFEST.in to include docs in release. [WouterVH]
