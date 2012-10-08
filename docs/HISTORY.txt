@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.1.10 (2012-10-08)
+-------------------
+
+- Make configlet work on context that implements IPloneSiteRoot [huub_bouma]
+
 
 1.1.9 (2011-05-19)
 ------------------

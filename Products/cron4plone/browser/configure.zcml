@@ -13,9 +13,11 @@
       permission="zope.Public"
       allowed_interface="..interfaces.ICronTickView"
       />
-  
+
+  <adapter factory=".configlets.cron_configuration.Cron4ploneControlPanelAdapter"/>
+
   <browser:page
-     for="Products.CMFPlone.Portal.PloneSite"
+     for="Products.CMFCore.interfaces.ISiteRoot"
      name="cron4plone-configuration"
      class=".configlets.cron_configuration.CronConfigurationForm"
      permission="cmf.ManagePortal"
