@@ -158,6 +158,7 @@ Examples::
 
     * 11 * * portal/@@run_me
     15,30 * * * python: portal.my_tool.runThis()
+    10 */1 * * portal/run_me
 
 3. Wait and see
 ---------------

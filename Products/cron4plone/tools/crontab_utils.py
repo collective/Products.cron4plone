@@ -1,4 +1,5 @@
 from DateTime import DateTime
+import re
 from types import ListType, TupleType
 
 
@@ -8,7 +9,8 @@ def getNoSecDate(date):
 def splitJob(job):
     splitted = job.split()
     schedule = splitted[:4]
-    schedule = [part.find(',') != -1 and part.split(',') or part for part in schedule]
+    
+    schedule = [re.findall(',|/', part) and re.split(',|/', part) or part for part in schedule]
     expression = ' '.join(splitted[4:])
     return dict(schedule = schedule,
                 expression = expression)
@@ -23,19 +25,25 @@ def getNextScheduledExecutionTime(schedule, current_date):
     current_date = getNoSecDate(current_date)
 
     c_year, c_month, c_day, c_hour, c_minute, c_seconds, c_zone = current_date.parts()
-
+    
     # Minute
     if scheduled_minute == '*':
         next_minute = c_minute
     else:
         if type(scheduled_minute) in (ListType, TupleType):
-            next_minute = int(scheduled_minute[0])
-            for min in scheduled_minute:
-                #Convert this from string to int to ensure comparison works
-                min_int = int(min)
-                if min_int >= c_minute:
-                    next_minute = min_int
-                    break
+            # we might have a * here, as well now
+            if scheduled_minute[0] == "*":
+                if len(scheduled_minute) > 2:
+                    raise ValueError("*/x notation can only have one number")
+                next_minute = c_minute + int(scheduled_minute[1])
+            else:    
+                next_minute = int(scheduled_minute[0])
+                for min in scheduled_minute:
+                    #Convert this from string to int to ensure comparison works
+                    min_int = int(min)
+                    if min_int >= c_minute:
+                        next_minute = min_int
+                        break
         else:
             next_minute = int(scheduled_minute)
 
@@ -44,14 +52,19 @@ def getNextScheduledExecutionTime(schedule, current_date):
         next_hour = c_hour
     else:
         if type(scheduled_hour) in (ListType, TupleType):
-            next_hour = int(scheduled_hour[0])
-            for hour in scheduled_hour:
-                #Convert this from string to int to ensure comparison works
-                hour_int = int(hour)
-                if hour_int >= c_hour:
-                    if (c_hour, c_minute) <= (hour_int, next_minute):
-                        next_hour = hour_int
-                        break
+            if scheduled_hour[0] == "*":
+                if len(scheduled_hour) > 2:
+                    raise ValueError("*/x notation can only have one number")
+                next_hour = c_hour + int(scheduled_hour[1])
+            else:
+                next_hour = int(scheduled_hour[0])
+                for hour in scheduled_hour:
+                    #Convert this from string to int to ensure comparison works
+                    hour_int = int(hour)
+                    if hour_int >= c_hour:
+                        if (c_hour, c_minute) <= (hour_int, next_minute):
+                            next_hour = hour_int
+                            break
         else:
             next_hour = int(scheduled_hour)
 
@@ -67,14 +80,19 @@ def getNextScheduledExecutionTime(schedule, current_date):
         next_day=c_day
     else:
         if type(scheduled_day_of_month) in (ListType, TupleType):
-            next_day = int(scheduled_day_of_month[0])
-            for day in scheduled_day_of_month:
-                #Convert this from string to int to ensure comparison works
-                day_int = int(day)
-                if day_int >= c_day:
-                    if (c_day, c_hour, c_minute) <= (day_int, next_hour, next_minute):
-                        next_day = day_int
-                        break
+            if scheduled_day_of_month[0] == "*":
+                if len(next_day) > 2:
+                    raise ValueError("*/x notation can only have one number")
+                day_int = c_day + int(scheduled_day_of_month[0])
+            else:
+                next_day = int(scheduled_day_of_month[1])
+                for day in scheduled_day_of_month:
+                    #Convert this from string to int to ensure comparison works
+                    day_int = int(day)
+                    if day_int >= c_day:
+                        if (c_day, c_hour, c_minute) <= (day_int, next_hour, next_minute):
+                            next_day = day_int
+                            break
         else:
             next_day = int(scheduled_day_of_month)
 
@@ -97,14 +115,19 @@ def getNextScheduledExecutionTime(schedule, current_date):
         next_month = c_month
     else:
         if type(scheduled_month) in (ListType, TupleType):
-            next_month = int(scheduled_month[0])
-            for month in scheduled_month:
-                #Convert this from string to int to ensure comparison works
-                month_int = int(month)
-                if month_int >= c_month:
-                    if (c_month, c_day, c_hour, c_minute) <= (month_int, next_day, next_hour, next_minute):
-                        next_month = month_int
-                        break
+            if scheduled_month[0] == "*":
+                if len(scheduled_month) > 2:
+                    raise ValueError("*/x notation can only have one number")
+                next_month = c_month + int(scheduled_month[0])
+            else:
+                next_month = int(scheduled_month[1])
+                for month in scheduled_month:
+                    #Convert this from string to int to ensure comparison works
+                    month_int = int(month)
+                    if month_int >= c_month:
+                        if (c_month, c_day, c_hour, c_minute) <= (month_int, next_day, next_hour, next_minute):
+                            next_month = month_int
+                            break
         else:
             next_month = int(scheduled_month)
 
