@@ -178,7 +178,10 @@ def getNextScheduledExecutionTime(schedule, current_date):
             next_minute = 0
 
         if type(scheduled_minute) in (ListType, TupleType):
-            next_minute = int(scheduled_minute[0])
+            if scheduled_minute[0] == "*": # Support */x notation
+                next_minute = 0
+            else:
+                next_minute = int(scheduled_minute[0])
 
 
     date_string = "%d/%02d/%02d %02d:%02d %s" % (next_year, next_month, next_day, next_hour, next_minute, c_zone)
