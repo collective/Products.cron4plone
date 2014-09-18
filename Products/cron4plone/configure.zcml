@@ -4,6 +4,8 @@
     xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="Products.cron4plone">
 
+    <includeDependencies package="."/>
+    <include package="Products.CMFCore" file="permissions.zcml"/>
     <include file="upgrades.zcml" />
 
     <!-- Include the sub-packages that use their own configure.zcml files. -->
