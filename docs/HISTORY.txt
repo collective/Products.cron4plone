@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.1.11 (2014-9-18)
-------------------
+1.1.11dev0 (2014-10-19)
+-------------------
 
 - Added z3c-slug and made sure that the CMF.Core permisssions are loaded in the
   zcml. Also added a gitignore. [benniboy]
